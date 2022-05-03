@@ -7,3 +7,15 @@ spring:
     password: 1999
     url: jdbc:mysql://localhost:3306/601_server?useUnicode=true&characterEncoding=utf-8
     driver-class-name: com.mysql.cj.jdbc.Driver
+
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+  mapper-locations: classpath:/mapper/**
+
+# 定义文件上传路径
+# windows 系统
+win-upload-file-path: E:\upload\
+
+# linux系统
+unix-upload-file-path: /opt/upload/
