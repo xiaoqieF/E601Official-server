@@ -38,4 +38,18 @@ public class UserController {
                                HttpServletRequest req) throws IOException {
         return FileUploadUtil.saveTo("/userAvatar", uploadFile, req);
     }
+
+    @PostMapping("public/login")
+    public Result login(@RequestBody User user) {
+        String username = user.getUsername();
+        String password = user.getPassword();
+        switch (userService.login(username, password)) {
+            case 1:
+                return Result.success();
+            case 0:
+                return Result.failed("密码错误！");
+            default:
+                return Result.failed("用户名不存在！");
+        }
+    }
 }

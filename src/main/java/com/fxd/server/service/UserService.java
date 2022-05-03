@@ -8,4 +8,6 @@ public interface UserService {
      * @return 注册成功返回 1, 否则返回 0
      */
     int signUp(User user);
+
+    int login(String username, String password);
 }

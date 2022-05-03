@@ -27,4 +27,18 @@ public class UserServiceImpl implements UserService {
         }
         return 0;
     }
+
+    @Override
+    public int login(String username, String password) {
+        if (mapper.getUserByNameAndPassword(username, password) != null) {
+            return 1;
+        }
+        // 密码错误
+        if (mapper.getUserCountByName(username) > 0) {
+            return 0;
+        // 用户不存在
+        } else {
+            return -1;
+        }
+    }
 }
