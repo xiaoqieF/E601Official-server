@@ -9,5 +9,6 @@ public interface UserMapper {
     int addUser(User user);
     User getUserByNameAndPassword(@Param("username") String username, @Param("password") String password);
     int getUserCountByName(@Param("username") String username);
-
+    User getUserById(@Param("id") Integer id);
+    int updateUser(User user);
 }

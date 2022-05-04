@@ -10,11 +10,19 @@
         values (#{avatar}, #{description}, #{createTime}, #{email}, #{nickname}, #{password},
                 #{moto}, #{type}, #{updateTime}, #{username}, #{site});
     </insert>
+    <update id="updateUser">
+        update t_user set nickname = #{nickname}, password = #{password}, email = #{email}, moto = #{moto},
+                          site = #{site}, description = #{description}, avatar = #{avatar}, update_time = #{updateTime}
+        where id = #{id};
+    </update>
     <select id="getUserByNameAndPassword" resultType="com.fxd.server.pojo.User">
         select * from t_user where username = #{username} and password = #{password};
     </select>
     <select id="getUserCountByName" resultType="java.lang.Integer">
         select COUNT(*) from t_user where username = #{username};
+    </select>
+    <select id="getUserById" resultType="com.fxd.server.pojo.User">
+        select * from t_user where id = #{id};
     </select>
 
 

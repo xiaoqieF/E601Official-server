@@ -16,13 +16,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @ControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
-
-    /**
-     * 数据库操作异常
-     */
-    private static final Integer DATA_ACCESS_EXCEPTION = 508;
-
-
     /**
      * 处理token异常
      */
@@ -50,7 +43,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({DataIntegrityViolationException.class})
     public Result sqlConstraintException(DataIntegrityViolationException e) {
         e.printStackTrace();
-        return Result.failed("不允许操作该表项！");
+        return Result.failed(ResultMeta.DATA_ACCESS_EXCEPTION);
     }
 
     /**

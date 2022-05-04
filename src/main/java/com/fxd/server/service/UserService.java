@@ -1,6 +1,7 @@
 package com.fxd.server.service;
 
 import com.fxd.server.pojo.User;
+import com.fxd.server.response.Result;
 
 public interface UserService {
     /**
@@ -9,5 +10,11 @@ public interface UserService {
      */
     int signUp(User user);
 
-    int login(String username, String password);
+    Result login(String username, String password);
+
+    User getUserById(Integer id);
+
+    User getUserAllInfoById(Integer id);
+
+    int updateUserInfo(User user);
 }
