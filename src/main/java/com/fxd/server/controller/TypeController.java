@@ -12,8 +12,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @Slf4j
 public class TypeController {
-    @Autowired
-    private TypeService typeService;
+    private final TypeService typeService;
+
+    public TypeController(TypeService typeService) {
+        this.typeService = typeService;
+    }
 
     // 查询所有分类
     @GetMapping("/public/categories/{userId}")
