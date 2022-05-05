@@ -129,4 +129,31 @@
             (#{id}, #{item})
         </foreach>
     </insert>
+
+    <delete id="deleteBlogById">
+        delete from t_blog where id=#{id};
+    </delete>
+    <delete id="deleteBlogTag">
+        delete from t_blog_tag where blog_id=#{blogId}
+    </delete>
+
+    <update id="updateBlog">
+        update t_blog
+        set appreciation = #{appreciation},
+            comment_enable = #{commentEnable},
+            content = #{content},
+            create_time = #{createTime},
+            description = #{description},
+            first_picture = #{firstPicture},
+            flag = #{flag},
+            published = #{published},
+            recommend = #{recommend},
+            share_statement = #{shareStatement},
+            title = #{title},
+            update_time = #{updateTime},
+            views = #{views},
+            type_id = #{typeId},
+            user_id = #{userId}
+        where id = #{id};
+    </update>
 </mapper>
