@@ -3,7 +3,6 @@ package com.fxd.server.service;
 import com.fxd.server.dao.TagMapper;
 import com.fxd.server.pojo.Tag;
 import com.fxd.server.pojo.Type;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

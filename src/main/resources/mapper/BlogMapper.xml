@@ -4,4 +4,113 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fxd.server.dao.BlogMapper">
 
+    <resultMap id="blogResMap" type="com.fxd.server.pojo.Blog">
+        <id property="id" column="blog_id"/>
+        <result property="appreciation" column="blog_appreciation"/>
+        <result property="commentEnable" column="blog_comment_enable"/>
+        <result property="content" column="blog_content"/>
+        <result property="createTime" column="blog_create_time"/>
+        <result property="description" column="blog_description"/>
+        <result property="firstPicture" column="blog_first_picture"/>
+        <result property="flag" column="blog_flag"/>
+        <result property="published" column="blog_published"/>
+        <result property="recommend" column="blog_recommend"/>
+        <result property="shareStatement" column="blog_share_statement"/>
+        <result property="title" column="blog_title"/>
+        <result property="updateTime" column="blog_update_time"/>
+        <result property="views" column="blog_views"/>
+        <association property="user" javaType="com.fxd.server.pojo.User">
+            <id property="id" column="user_id"/>
+            <result property="avatar" column="user_avatar"/>
+            <result property="description" column="user_description"/>
+            <result property="createTime" column="user_create_time"/>
+            <result property="username" column="user_username"/>
+            <result property="moto" column="user_moto"/>
+            <result property="updateTime" column="user_update_time"/>
+            <result property="nickname" column="user_nickname"/>
+            <result property="type" column="user_type"/>
+            <result property="email" column="user_email"/>
+            <result property="site" column="user_site"/>
+        </association>
+        <association property="type" javaType="com.fxd.server.pojo.Type">
+            <id property="id" column="type_id"/>
+            <result property="name" column="type_name"/>
+        </association>
+        <collection property="tags" javaType="ArrayList" column="blog_id"
+                    ofType="com.fxd.server.pojo.Tag" select="selectTagsForBlog"/>
+    </resultMap>
+    <!-- 在tag表中，通过中间表找出博客id为#{blog_id}对应的标签 -->
+    <select id="selectTagsForBlog" resultType="com.fxd.server.pojo.Tag">
+        select * from t_tag where id in (select tag_id from t_blog_tag where blog_id = #{blog_id});
+    </select>
+
+    <!-- 根据某个用户的id查询出他的所有博客 -->
+    <select id="getBlogsByUserId" resultMap="blogResMap">
+        select
+            B.id as blog_id,
+            B.appreciation as blog_appreciation,
+            B.comment_enable as blog_comment_enable,
+            B.content as blog_content,
+            B.create_time as blog_create_time,
+            B.description as blog_description,
+            B.first_picture as blog_first_picture,
+            B.flag as blog_flag,
+            B.published as blog_published,
+            B.recommend as blog_recommend,
+            B.share_statement as blog_share_statement,
+            B.title as blog_title,
+            B.update_time as blog_update_time,
+            B.views as blog_views,
+            U.id as user_id,
+            U.avatar as user_avatar,
+            U.description as user_description,
+            U.create_time as user_create_time,
+            U.username as user_username,
+            U.moto as user_moto,
+            U.update_time as user_update_time,
+            U.nickname as user_nickname,
+            U.type as user_type,
+            U.email as user_email,
+            U.site as user_site,
+            T.id as type_id,
+            T.name as type_name
+        from t_blog B
+        left outer join t_user U on U.id = B.user_id
+        left outer join t_type T on T.id = B.type_id
+        where B.user_id = #{userId};
+    </select>
+    <select id="getBlogById" resultMap="blogResMap">
+        select
+            B.id as blog_id,
+            B.appreciation as blog_appreciation,
+            B.comment_enable as blog_comment_enable,
+            B.content as blog_content,
+            B.create_time as blog_create_time,
+            B.description as blog_description,
+            B.first_picture as blog_first_picture,
+            B.flag as blog_flag,
+            B.published as blog_published,
+            B.recommend as blog_recommend,
+            B.share_statement as blog_share_statement,
+            B.title as blog_title,
+            B.update_time as blog_update_time,
+            B.views as blog_views,
+            U.id as user_id,
+            U.avatar as user_avatar,
+            U.description as user_description,
+            U.create_time as user_create_time,
+            U.username as user_username,
+            U.moto as user_moto,
+            U.update_time as user_update_time,
+            U.nickname as user_nickname,
+            U.type as user_type,
+            U.email as user_email,
+            U.site as user_site,
+            T.id as type_id,
+            T.name as type_name
+        from t_blog B
+                 left outer join t_user U on U.id = B.user_id
+                 left outer join t_type T on T.id = B.type_id
+        where B.id = #{blogId};
+    </select>
 </mapper>
