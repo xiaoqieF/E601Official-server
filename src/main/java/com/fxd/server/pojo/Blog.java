@@ -36,8 +36,11 @@ public class Blog {
 
     // 博客所属分类
     private Type type;
+    private Long typeId;
     // 博客用户(作者)
     private User user;
+    private Long userId;
     // 标签列表
     private List<Tag> tags = new ArrayList<>();
+    private List<Long> tagId = new ArrayList<>();
 }

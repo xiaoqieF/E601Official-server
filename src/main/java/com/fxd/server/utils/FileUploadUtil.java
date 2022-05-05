@@ -7,6 +7,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -41,6 +43,7 @@ public class FileUploadUtil {
         Map<String, Object> data = new HashMap<>();
         data.put("path", req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort()
                 + "/images" + path + "/" + newName);
+        data.put("relativePath", newName);
         log.info("access url:{}",
                 req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort()
                         + "/images" + path + "/" + newName );
@@ -60,5 +63,15 @@ public class FileUploadUtil {
         }
         log.info(realPath);
         return realPath;
+    }
+
+    public static Result removeFile(String path) throws IOException {
+        String realPath = getRealPath(path);
+        log.info("remove:{}", realPath);
+        boolean deleted = Files.deleteIfExists(Paths.get(realPath));
+        if (deleted) {
+            return Result.success();
+        }
+        return Result.failed("删除文件失败:" + path);
     }
 }

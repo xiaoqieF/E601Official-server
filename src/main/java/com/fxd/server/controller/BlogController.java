@@ -3,12 +3,13 @@ package com.fxd.server.controller;
 import com.fxd.server.pojo.Blog;
 import com.fxd.server.response.Result;
 import com.fxd.server.service.BlogService;
+import com.fxd.server.utils.FileUploadUtil;
 import com.github.pagehelper.PageInfo;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,5 +31,26 @@ public class BlogController {
         res.put("total", pageInfo.getTotal());
         res.put("blogList", pageInfo.getList());
         return Result.success(res);
+    }
+
+    @PostMapping("/private/blog")
+    public Result addBlog(@RequestBody Blog blog) {
+        if (blogService.addBlog(blog) > 0) {
+            return Result.success();
+        }
+        return Result.failed("插入文章失败！");
+    }
+
+    // 上传文章首图
+    @PostMapping("/private/blog/firstPicture")
+    public Result uploadFirstPicture(@RequestParam("file") MultipartFile uploadFile,
+                               HttpServletRequest req) throws IOException {
+        return FileUploadUtil.saveTo("/firstPicture", uploadFile, req);
+    }
+
+    // 删除文章首图
+    @DeleteMapping("/private/blog/firstPicture/{fileName}")
+    public Result deleteFirstPicture(@PathVariable("fileName") String fileName) throws IOException {
+        return FileUploadUtil.removeFile("/firstPicture/" + fileName);
     }
 }

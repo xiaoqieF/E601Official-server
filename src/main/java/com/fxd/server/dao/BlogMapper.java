@@ -11,4 +11,7 @@ public interface BlogMapper {
     // 获取某个用户的全部博客
     List<Blog> getBlogsByUserId(@Param("userId") Long userId);
     List<Blog> getBlogById(@Param("blogId") Long blogId);
+    int addBlog(Blog blog);
+    // 添加博客标签
+    int addBlogTag(Blog blog);
 }

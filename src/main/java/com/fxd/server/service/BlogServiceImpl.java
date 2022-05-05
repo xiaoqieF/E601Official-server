@@ -4,11 +4,14 @@ import com.fxd.server.dao.BlogMapper;
 import com.fxd.server.pojo.Blog;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 
 
 @Service
+@Slf4j
 public class BlogServiceImpl implements BlogService{
     private final BlogMapper mapper;
 
@@ -22,5 +25,18 @@ public class BlogServiceImpl implements BlogService{
         if (page != null && offset != null)
             PageHelper.startPage(page, offset);
         return new PageInfo<>(mapper.getBlogsByUserId(userId));
+    }
+
+    @Override
+    public int addBlog(Blog blog) {
+        blog.setCreateTime(new Date());
+        blog.setUpdateTime(new Date());
+        blog.setViews(0);
+        // 插入博客后，会自动给blog中的id赋值，这个id值用于下面的addBlogTag使用
+        int num = mapper.addBlog(blog);
+        log.info("插入博客：{}", blog);
+        // 向中间表中插入关联数据
+        mapper.addBlogTag(blog);
+        return num;
     }
 }
