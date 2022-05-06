@@ -28,6 +28,7 @@ public class AlbumController {
         return Result.failed("添加相册失败！");
     }
 
+    // 获取用户的全部相册
     @GetMapping("/private/album/{userId}")
     public Result getAlbum(@PathVariable("userId") Long userId) {
         List<Album> albums = albumService.getAlbumsByUserId(userId);
@@ -35,6 +36,15 @@ public class AlbumController {
             return Result.success(albums);
         }
         return Result.failed("获取相册失败！");
+    }
+
+    // 删除相册
+    @DeleteMapping("/private/album/{albumId}")
+    public Result deleteAlbum(@PathVariable("albumId") Long albumId) {
+        if (albumService.deleteAlbumById(albumId) > 0) {
+            return Result.success();
+        }
+        return Result.failed("删除失败！");
     }
 
     // 上传图片

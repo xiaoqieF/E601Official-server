@@ -10,6 +10,9 @@
         values(#{title}, #{device}, #{views}, #{like},
                #{description}, #{createTime}, #{updateTime}, #{userId}, #{urls});
     </insert>
+    <delete id="deleteAlbumById">
+        delete from t_album where id = #{albumId};
+    </delete>
 
     <select id="getAlbumsByUserId" resultType="com.fxd.server.pojo.Album">
         select * from t_album where user_id = #{userId};

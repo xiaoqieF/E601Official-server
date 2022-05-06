@@ -2,7 +2,6 @@ package com.fxd.server.service;
 
 import com.fxd.server.dao.AlbumMapper;
 import com.fxd.server.pojo.Album;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -28,5 +27,10 @@ public class AlbumServiceImpl implements AlbumService{
     @Override
     public List<Album> getAlbumsByUserId(Long userId) {
         return mapper.getAlbumsByUserId(userId);
+    }
+
+    @Override
+    public int deleteAlbumById(Long albumId) {
+        return mapper.deleteAlbumById(albumId);
     }
 }
