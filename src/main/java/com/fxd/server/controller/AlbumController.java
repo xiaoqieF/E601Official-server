@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 public class AlbumController {
@@ -25,6 +26,15 @@ public class AlbumController {
             return Result.success();
         }
         return Result.failed("添加相册失败！");
+    }
+
+    @GetMapping("/private/album/{userId}")
+    public Result getAlbum(@PathVariable("userId") Long userId) {
+        List<Album> albums = albumService.getAlbumsByUserId(userId);
+        if (albums != null) {
+            return Result.success(albums);
+        }
+        return Result.failed("获取相册失败！");
     }
 
     // 上传图片

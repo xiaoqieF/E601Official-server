@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class AlbumServiceImpl implements AlbumService{
@@ -22,5 +23,10 @@ public class AlbumServiceImpl implements AlbumService{
         album.setLike(0);
         album.setViews(0);
         return mapper.addAlbum(album);
+    }
+
+    @Override
+    public List<Album> getAlbumsByUserId(Long userId) {
+        return mapper.getAlbumsByUserId(userId);
     }
 }

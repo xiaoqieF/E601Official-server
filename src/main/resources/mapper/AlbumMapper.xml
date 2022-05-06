@@ -10,4 +10,8 @@
         values(#{title}, #{device}, #{views}, #{like},
                #{description}, #{createTime}, #{updateTime}, #{userId}, #{urls});
     </insert>
+
+    <select id="getAlbumsByUserId" resultType="com.fxd.server.pojo.Album">
+        select * from t_album where user_id = #{userId};
+    </select>
 </mapper>
