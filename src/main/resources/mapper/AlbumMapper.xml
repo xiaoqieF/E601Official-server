@@ -10,11 +10,27 @@
         values(#{title}, #{device}, #{views}, #{like},
                #{description}, #{createTime}, #{updateTime}, #{userId}, #{urls});
     </insert>
+    <update id="updateAlbum">
+        update t_album
+        set title = #{title},
+            device = #{device},
+            views = #{views},
+            `like` = #{like},
+            description = #{description},
+            create_time = #{createTime},
+            update_time = #{updateTime},
+            user_id = #{userId},
+            urls = #{urls}
+        where id = #{id};
+    </update>
     <delete id="deleteAlbumById">
         delete from t_album where id = #{albumId};
     </delete>
 
     <select id="getAlbumsByUserId" resultType="com.fxd.server.pojo.Album">
         select * from t_album where user_id = #{userId};
+    </select>
+    <select id="getAlbumById" resultType="com.fxd.server.pojo.Album">
+        select * from t_album where id = #{id};
     </select>
 </mapper>

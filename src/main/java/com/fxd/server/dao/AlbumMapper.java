@@ -11,4 +11,6 @@ public interface AlbumMapper {
     int addAlbum(Album album);
     List<Album> getAlbumsByUserId(@Param("userId") Long userId);
     int deleteAlbumById(@Param("albumId") Long albumId);
+    Album getAlbumById(@Param("id") Long id);
+    int updateAlbum(Album album);
 }

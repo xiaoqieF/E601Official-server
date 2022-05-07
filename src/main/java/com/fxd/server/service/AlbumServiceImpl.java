@@ -33,4 +33,14 @@ public class AlbumServiceImpl implements AlbumService{
     public int deleteAlbumById(Long albumId) {
         return mapper.deleteAlbumById(albumId);
     }
+
+    @Override
+    public Album getAlbumById(Long id) {
+        return mapper.getAlbumById(id);
+    }
+
+    @Override
+    public int updateAlbum(Album album) {
+        return mapper.updateAlbum(album);
+    }
 }
