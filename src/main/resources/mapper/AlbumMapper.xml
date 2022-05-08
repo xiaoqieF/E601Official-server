@@ -33,4 +33,55 @@
     <select id="getAlbumById" resultType="com.fxd.server.pojo.Album">
         select * from t_album where id = #{id};
     </select>
+
+    <resultMap id="albumResMap" type="com.fxd.server.pojo.Album">
+        <id property="id" column="album_id"/>
+        <result property="title" column="album_title"/>
+        <result property="device" column="album_device"/>
+        <result property="views" column="album_views"/>
+        <result property="like" column="album_like"/>
+        <result property="description" column="album_description"/>
+        <result property="createTime" column="album_create_time"/>
+        <result property="updateTime" column="album_update_time"/>
+        <result property="urls" column="album_urls"/>
+        <association property="user" javaType="com.fxd.server.pojo.User">
+            <id property="id" column="user_id"/>
+            <result property="avatar" column="user_avatar"/>
+            <result property="description" column="user_description"/>
+            <result property="createTime" column="user_create_time"/>
+            <result property="username" column="user_username"/>
+            <result property="moto" column="user_moto"/>
+            <result property="updateTime" column="user_update_time"/>
+            <result property="nickname" column="user_nickname"/>
+            <result property="type" column="user_type"/>
+            <result property="email" column="user_email"/>
+            <result property="site" column="user_site"/>
+        </association>
+    </resultMap>
+
+    <select id="getAllAlbums" resultMap="albumResMap">
+        select
+            A.id as album_id,
+            A.title as album_title,
+            A.device as album_device,
+            A.views as album_views,
+            A.`like` as album_like,
+            A.description as album_description,
+            A.create_time as album_create_time,
+            A.update_time as album_update_time,
+            A.urls as album_urls,
+            U.id as user_id,
+            U.avatar as user_avatar,
+            U.description as user_description,
+            U.create_time as user_create_time,
+            U.username as user_username,
+            U.moto as user_moto,
+            U.update_time as user_update_time,
+            U.nickname as user_nickname,
+            U.type as user_type,
+            U.email as user_email,
+            U.site as user_site
+        from t_album as A
+             left outer join t_user U on U.id = A.user_id
+    </select>
 </mapper>

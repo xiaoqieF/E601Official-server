@@ -43,4 +43,9 @@ public class AlbumServiceImpl implements AlbumService{
     public int updateAlbum(Album album) {
         return mapper.updateAlbum(album);
     }
+
+    @Override
+    public List<Album> getAllAlbums() {
+        return mapper.getAllAlbums();
+    }
 }

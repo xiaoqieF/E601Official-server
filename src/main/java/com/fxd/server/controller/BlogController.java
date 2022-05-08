@@ -33,6 +33,16 @@ public class BlogController {
         return Result.success(res);
     }
 
+    // 获取所有用户的所有博客
+    @GetMapping("/public/allBlogs")
+    public Result getAllBlogs(@RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize) {
+        PageInfo<Blog> pageInfo = blogService.getAllBlogs(pageNum, pageSize);
+        Map<String, Object> res = new HashMap<>();
+        res.put("total", pageInfo.getTotal());
+        res.put("blogList", pageInfo.getList());
+        return Result.success(res);
+    }
+
     // 添加博客
     @PostMapping("/private/blog")
     public Result addBlog(@RequestBody Blog blog) {

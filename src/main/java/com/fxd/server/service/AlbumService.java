@@ -10,4 +10,5 @@ public interface AlbumService {
     int deleteAlbumById(Long albumId);
     Album getAlbumById(Long id);
     int updateAlbum(Album album);
+    List<Album> getAllAlbums();
 }

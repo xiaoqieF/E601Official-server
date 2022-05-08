@@ -70,4 +70,12 @@ public class BlogServiceImpl implements BlogService{
         mapper.addBlogTag(blog);
         return num;
     }
+
+    @Override
+    public PageInfo<Blog> getAllBlogs(Integer page, Integer offset) {
+        PageHelper.orderBy("blog_create_time desc");
+        PageHelper.startPage(page, offset);
+        return new PageInfo<>(mapper.getAllBlogs());
+    }
+
 }

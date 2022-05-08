@@ -115,6 +115,7 @@
         where B.id = #{blogId};
     </select>
 
+
     <insert id="addBlog" useGeneratedKeys="true" keyProperty="id">
         insert into t_blog(appreciation, comment_enable, content, create_time, description, first_picture, flag, published,
                            recommend, share_statement, title, update_time, views, type_id, user_id)
@@ -156,4 +157,39 @@
             user_id = #{userId}
         where id = #{id};
     </update>
+
+    <select id="getAllBlogs" resultMap="blogResMap">
+        select
+            B.id as blog_id,
+            B.appreciation as blog_appreciation,
+            B.comment_enable as blog_comment_enable,
+            B.content as blog_content,
+            B.create_time as blog_create_time,
+            B.description as blog_description,
+            B.first_picture as blog_first_picture,
+            B.flag as blog_flag,
+            B.published as blog_published,
+            B.recommend as blog_recommend,
+            B.share_statement as blog_share_statement,
+            B.title as blog_title,
+            B.update_time as blog_update_time,
+            B.views as blog_views,
+            U.id as user_id,
+            U.avatar as user_avatar,
+            U.description as user_description,
+            U.create_time as user_create_time,
+            U.username as user_username,
+            U.moto as user_moto,
+            U.update_time as user_update_time,
+            U.nickname as user_nickname,
+            U.type as user_type,
+            U.email as user_email,
+            U.site as user_site,
+            T.id as type_id,
+            T.name as type_name
+        from t_blog B
+                 left outer join t_user U on U.id = B.user_id
+                 left outer join t_type T on T.id = B.type_id
+        where B.published = true;
+    </select>
 </mapper>

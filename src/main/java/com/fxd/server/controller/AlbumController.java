@@ -38,6 +38,15 @@ public class AlbumController {
         return Result.failed("获取相册失败！");
     }
 
+    @GetMapping("/public/allAlbums")
+    public Result getAllAlbums() {
+        List<Album> albums = albumService.getAllAlbums();
+        if (albums != null) {
+            return Result.success(albums);
+        }
+        return Result.failed("获取相册失败！");
+    }
+
     // 删除相册
     @DeleteMapping("/private/album/{albumId}")
     public Result deleteAlbum(@PathVariable("albumId") Long albumId) {
@@ -57,6 +66,7 @@ public class AlbumController {
         return Result.failed("未查询到相关album");
     }
 
+    // 更新相册
     @PutMapping("/private/album")
     public Result updateAlbum(@RequestBody Album album) {
         if (albumService.updateAlbum(album) > 0) {

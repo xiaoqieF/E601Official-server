@@ -18,4 +18,6 @@ public interface BlogMapper {
     // 删除博客标签中间表中的相关记录
     int deleteBlogTag(Long blogId);
     int updateBlog(Blog blog);
+    // 获取所有已发表的博客
+    List<Blog> getAllBlogs();
 }
