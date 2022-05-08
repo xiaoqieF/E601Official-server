@@ -42,8 +42,8 @@ public class UserServiceImpl implements UserService {
             payload.put("id", user.getId().toString());
             payload.put("username", user.getUsername());
             payload.put("password", user.getPassword());
-            // 40 min
-            String token = JWTUtil.getToken(payload, 40*60);
+            // 2 hours
+            String token = JWTUtil.getToken(payload, 2*60*60);
             Map<String, Object> res = new HashMap<>();
             res.put("token", token);
             res.put("user", user);

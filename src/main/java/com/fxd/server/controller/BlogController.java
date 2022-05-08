@@ -61,6 +61,7 @@ public class BlogController {
         return Result.failed("删除失败！");
     }
 
+    // 根据博客id获取博客
     @GetMapping("/private/blog/{blogId}")
     public Result getRawBlogById(@PathVariable("blogId") Long blogId) {
         Blog blog = blogService.getRawBlogById(blogId);
@@ -68,6 +69,16 @@ public class BlogController {
             return Result.success(blog);
         }
         return Result.failed("查找博客失败！");
+    }
+
+    // 根据博客id获取博客(将markdown渲染成html后)
+    @GetMapping("public/blog/{blogId}")
+    public Result getRenderedBlogById(@PathVariable("blogId") Long blogId) {
+        Blog blog = blogService.getRenderedBlogById(blogId);
+        if (blog != null) {
+            return Result.success(blog);
+        }
+        return Result.failed("获取博客失败！");
     }
 
     // 更新博客信息

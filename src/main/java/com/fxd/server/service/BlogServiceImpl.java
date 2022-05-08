@@ -3,6 +3,7 @@ package com.fxd.server.service;
 import com.fxd.server.dao.BlogMapper;
 import com.fxd.server.pojo.Blog;
 import com.fxd.server.pojo.Tag;
+import com.fxd.server.utils.MarkdownUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
@@ -59,6 +60,16 @@ public class BlogServiceImpl implements BlogService{
         }
         blog.setUserId(blog.getUser().getId());
         return blog;
+    }
+
+    @Override
+    public Blog getRenderedBlogById(Long id) {
+        Blog blog = mapper.getBlogById(id);
+        if (blog != null) {
+            blog.setContent(MarkdownUtil.markToHtml(blog.getContent()));
+            return blog;
+        }
+        return null;
     }
 
     @Override
