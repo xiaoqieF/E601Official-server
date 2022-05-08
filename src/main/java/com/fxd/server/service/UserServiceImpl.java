@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -74,6 +75,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public int updateUserInfo(User user) {
         return mapper.updateUser(user);
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+        return mapper.getAllUsers();
     }
 
 

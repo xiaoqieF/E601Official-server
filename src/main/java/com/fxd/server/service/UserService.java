@@ -3,6 +3,8 @@ package com.fxd.server.service;
 import com.fxd.server.pojo.User;
 import com.fxd.server.response.Result;
 
+import java.util.List;
+
 public interface UserService {
     /**
      * 用户注册
@@ -17,4 +19,6 @@ public interface UserService {
     User getUserAllInfoById(Integer id);
 
     int updateUserInfo(User user);
+
+    List<User> getAllUsers();
 }

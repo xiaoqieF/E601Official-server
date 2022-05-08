@@ -24,4 +24,7 @@ public class User {
     // 描述
     private String description;
     private String site;
+
+    private Integer blogNum;
+    private Integer albumNum;
 }

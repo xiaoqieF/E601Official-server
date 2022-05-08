@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @Slf4j
@@ -48,6 +49,7 @@ public class UserController {
         return userService.login(username, password);
     }
 
+    // 获取某个用户信息(不包含密码)
     @GetMapping("public/user/{id}")
     public Result getUser(@PathVariable("id") Integer id) {
         User user = userService.getUserById(id);
@@ -58,6 +60,7 @@ public class UserController {
         }
     }
 
+    // 获取某个用户信息(包含密码)
     @GetMapping("private/user/{id}")
     public Result getUserAllInfo(@PathVariable("id") Integer id) {
         User user = userService.getUserAllInfoById(id);
@@ -68,6 +71,16 @@ public class UserController {
         }
     }
 
+    @GetMapping("public/allUsers")
+    public Result getAllUsers() {
+        List<User> users = userService.getAllUsers();
+        if (users != null) {
+            return Result.success(users);
+        }
+        return Result.failed("获取用户信息失败！");
+    }
+
+    // 修改用户信息
     @PutMapping("private/user/{id}")
     public Result updateUserInfo(@PathVariable("id") Integer id, @RequestBody User user) {
         int res = userService.updateUserInfo(user);

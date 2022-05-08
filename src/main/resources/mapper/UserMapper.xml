@@ -25,4 +25,32 @@
         select * from t_user where id = #{id};
     </select>
 
+    <resultMap id="userResMap" type="com.fxd.server.pojo.User">
+        <id property="id" column="id"/>
+        <result property="avatar" column="avatar"/>
+        <result property="description" column="description"/>
+        <result property="createTime" column="create_time"/>
+        <result property="email" column="email"/>
+        <result property="nickname" column="nickname"/>
+        <result property="moto" column="moto"/>
+        <result property="type" column="type"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="username" column="username"/>
+        <result property="site" column="site"/>
+        <association property="blogNum" javaType="int" column="id" select="getBlogCountByUserId"/>
+        <association property="albumNum" javaType="int" column="id" select="getAlbumCountByUserId"/>
+    </resultMap>
+
+    <select id="getBlogCountByUserId" resultType="int">
+        select COUNT(*) from t_blog where user_id = #{id};
+    </select>
+
+    <select id="getAlbumCountByUserId" resultType="int">
+        select COUNT(*) from t_album where user_id = #{id};
+    </select>
+
+    <select id="getAllUsers" resultMap="userResMap">
+        select * from t_user;
+    </select>
+
 </mapper>
