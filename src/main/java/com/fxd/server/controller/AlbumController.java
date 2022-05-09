@@ -4,6 +4,9 @@ import com.fxd.server.pojo.Album;
 import com.fxd.server.response.Result;
 import com.fxd.server.service.AlbumService;
 import com.fxd.server.utils.FileUploadUtil;
+import com.fxd.server.utils.JWTUtil;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -12,16 +15,25 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
+@Slf4j
 public class AlbumController {
     private final AlbumService albumService;
 
-    public AlbumController(AlbumService albumService) {
+    private final HttpServletRequest request;
+
+    public AlbumController(AlbumService albumService, HttpServletRequest request) {
         this.albumService = albumService;
+        this.request = request;
     }
 
     // 新建相册
     @PostMapping("/private/album")
     public Result addAlbum(@RequestBody Album album) {
+        // 验证用户token id
+        String token = request.getHeader("Authorization");
+        if (!JWTUtil.verify(token).getClaim("id").asString().equals(album.getUserId().toString())) {
+            return Result.failed("token无效");
+        }
         if (albumService.addAlbum(album) > 0) {
             return Result.success();
         }
@@ -31,6 +43,12 @@ public class AlbumController {
     // 获取用户的全部相册
     @GetMapping("/private/allAlbums/{userId}")
     public Result getAlbum(@PathVariable("userId") Long userId) {
+        // 验证用户token id
+        String token = request.getHeader("Authorization");
+        if (!JWTUtil.verify(token).getClaim("id").asString().equals(userId.toString())) {
+            return Result.failed("token无效");
+        }
+
         List<Album> albums = albumService.getAlbumsByUserId(userId);
         if (albums != null) {
             return Result.success(albums);
@@ -69,6 +87,11 @@ public class AlbumController {
     // 更新相册
     @PutMapping("/private/album")
     public Result updateAlbum(@RequestBody Album album) {
+        // 验证用户token id
+        String token = request.getHeader("Authorization");
+        if (!JWTUtil.verify(token).getClaim("id").asString().equals(album.getUserId().toString())) {
+            return Result.failed("token无效");
+        }
         if (albumService.updateAlbum(album) > 0) {
             return Result.success();
         }
@@ -79,6 +102,11 @@ public class AlbumController {
     @PostMapping("/private/album/picture/{userId}")
     public Result uploadPicture(@RequestParam("file") MultipartFile uploadFile,
                                      HttpServletRequest req, @PathVariable String userId) throws IOException {
+        // 验证用户token id
+        String token = request.getHeader("Authorization");
+        if (!JWTUtil.verify(token).getClaim("id").asString().equals(userId)) {
+            return Result.failed("token无效");
+        }
         return FileUploadUtil.saveTo("/album/" + userId, uploadFile, req);
     }
 
@@ -86,6 +114,11 @@ public class AlbumController {
     @DeleteMapping("/private/album/picture/{userId}/{fileName}")
     public Result deletePicture(@PathVariable("userId") String userId,
                                 @PathVariable("fileName") String fileName) throws IOException {
+        // 验证用户token id
+        String token = request.getHeader("Authorization");
+        if (!JWTUtil.verify(token).getClaim("id").asString().equals(userId)) {
+            return Result.failed("token无效");
+        }
         return FileUploadUtil.removeFile("/album/" + userId + "/" + fileName);
     }
 }

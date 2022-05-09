@@ -2,12 +2,10 @@ package com.fxd.server.controller;
 
 import com.fxd.server.pojo.User;
 import com.fxd.server.response.Result;
-import com.fxd.server.response.ResultMeta;
 import com.fxd.server.service.UserService;
 import com.fxd.server.utils.FileUploadUtil;
 import com.fxd.server.utils.JWTUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,9 +17,11 @@ import java.util.List;
 @Slf4j
 public class UserController {
     private final UserService userService;
+    private final HttpServletRequest request;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, HttpServletRequest request) {
         this.userService = userService;
+        this.request = request;
     }
 
     @PostMapping("/public/signup")
@@ -63,6 +63,11 @@ public class UserController {
     // 获取某个用户信息(包含密码)
     @GetMapping("private/user/{id}")
     public Result getUserAllInfo(@PathVariable("id") Integer id) {
+        // 验证用户token id
+        String token = request.getHeader("Authorization");
+        if (!JWTUtil.verify(token).getClaim("id").asString().equals(id.toString())) {
+            return Result.failed("token无效");
+        }
         User user = userService.getUserAllInfoById(id);
         if (user == null) {
             return Result.failed("用户ID无效");
@@ -83,6 +88,11 @@ public class UserController {
     // 修改用户信息
     @PutMapping("private/user/{id}")
     public Result updateUserInfo(@PathVariable("id") Integer id, @RequestBody User user) {
+        // 验证用户token id
+        String token = request.getHeader("Authorization");
+        if (!JWTUtil.verify(token).getClaim("id").asString().equals(id.toString())) {
+            return Result.failed("token无效");
+        }
         int res = userService.updateUserInfo(user);
         if (res > 0) {
             return Result.success();

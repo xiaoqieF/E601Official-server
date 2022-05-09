@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fxd.server.dao.CommentMapper">
+
+    <insert id="addComment">
+        insert into t_comment(nickname, email, content, create_time, blog_id, parent_comment_id)
+        values (#{nickname}, #{email}, #{content}, #{createTime}, #{blogId}, #{parentCommentId});
+    </insert>
+
+    <resultMap id="commentResMap" type="com.fxd.server.pojo.Comment">
+        <id property="id" column="id"/>
+        <result property="nickname" column="nickname"/>
+        <result property="email" column="email"/>
+        <result property="content" column="content"/>
+        <result property="avatar" column="avatar"/>
+        <result property="createTime" column="create_time"/>
+        <result property="blogId" column="blog_id"/>
+        <result property="parentCommentId" column="parent_comment_id"/>
+        <!-- 递归查询，利用子评论的parent_comment_id等于自己的id查询出所有儿子评论 -->
+        <collection property="replyComments" column="id" javaType="ArrayList" ofType="com.fxd.server.pojo.Comment" select="getCommentsByParentId"/>
+    </resultMap>
+
+    <!-- 通过博客id获取所有评论,这里要注意的是第一层查询需要指定parent_comment_id = -1 -->
+    <select id="getCommentByBlogId" resultMap="commentResMap">
+        select * from t_comment
+        where blog_id = #{blogId} and parent_comment_id = -1;
+    </select>
+
+    <!-- 根据parent_comment_id来查询出所有子评论，这些子评论又通过commentResMap来执行递归查询 -->
+    <select id="getCommentsByParentId" resultMap="commentResMap">
+        select * from t_comment
+        where parent_comment_id = #{id};
+    </select>
+</mapper>

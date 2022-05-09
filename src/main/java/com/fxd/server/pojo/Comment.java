@@ -12,14 +12,14 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Comment {
-    private Integer id;
+    private Long id;
     private String nickname;
     private String email;
     private String content;
     private String avatar;
     private Date createTime;
 
-    private Integer blogId;
-    private Integer parentCommentId;
+    private Long blogId;
+    private Long parentCommentId;
     private List<Comment> replyComments = new ArrayList<>();
 }

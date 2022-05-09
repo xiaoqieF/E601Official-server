@@ -4,6 +4,7 @@ import com.fxd.server.pojo.Blog;
 import com.fxd.server.response.Result;
 import com.fxd.server.service.BlogService;
 import com.fxd.server.utils.FileUploadUtil;
+import com.fxd.server.utils.JWTUtil;
 import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,9 +17,11 @@ import java.util.Map;
 @RestController
 public class BlogController {
     private final BlogService blogService;
+    private final HttpServletRequest request;
 
-    public BlogController(BlogService blogService) {
+    public BlogController(BlogService blogService, HttpServletRequest request) {
         this.blogService = blogService;
+        this.request = request;
     }
 
     // 获取某个用户的全部博客信息
@@ -26,6 +29,11 @@ public class BlogController {
     public Result getAllBlogsByUserId(@RequestParam(value = "pageNum", required = false) Integer pageNum,
                                       @RequestParam(value = "pageSize", required = false) Integer pageSize,
                                       @PathVariable("userId") Long userId) {
+        // 验证用户token id
+        String token = request.getHeader("Authorization");
+        if (!JWTUtil.verify(token).getClaim("id").asString().equals(userId.toString())) {
+            return Result.failed("token无效");
+        }
         PageInfo<Blog> pageInfo = blogService.getBlogsByUserId(pageNum, pageSize, userId);
         Map<String, Object> res = new HashMap<>();
         res.put("total", pageInfo.getTotal());
@@ -46,6 +54,11 @@ public class BlogController {
     // 添加博客
     @PostMapping("/private/blog")
     public Result addBlog(@RequestBody Blog blog) {
+        // 验证用户token id
+        String token = request.getHeader("Authorization");
+        if (!JWTUtil.verify(token).getClaim("id").asString().equals(blog.getUserId().toString())) {
+            return Result.failed("token无效");
+        }
         if (blogService.addBlog(blog) > 0) {
             return Result.success();
         }
@@ -84,6 +97,11 @@ public class BlogController {
     // 更新博客信息
     @PutMapping("/private/blog")
     public Result updateBlog(@RequestBody Blog blog) {
+        // 验证用户token id
+        String token = request.getHeader("Authorization");
+        if (!JWTUtil.verify(token).getClaim("id").asString().equals(blog.getUserId().toString())) {
+            return Result.failed("token无效");
+        }
         if(blogService.updateBlog(blog) > 0) {
             return Result.success();
         }
@@ -101,5 +119,12 @@ public class BlogController {
     @DeleteMapping("/private/blog/firstPicture/{fileName}")
     public Result deleteFirstPicture(@PathVariable("fileName") String fileName) throws IOException {
         return FileUploadUtil.removeFile("/firstPicture/" + fileName);
+    }
+
+    // 上传文章内的图片
+    @PostMapping("/private/blog/blogPictures")
+    public Result uploadBlogPicture(@RequestParam("file") MultipartFile uploadFile,
+                                     HttpServletRequest req) throws IOException {
+        return FileUploadUtil.saveTo("/blogPictures", uploadFile, req);
     }
 }
