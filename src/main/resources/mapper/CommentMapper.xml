@@ -5,8 +5,8 @@
 <mapper namespace="com.fxd.server.dao.CommentMapper">
 
     <insert id="addComment">
-        insert into t_comment(nickname, email, content, create_time, blog_id, parent_comment_id)
-        values (#{nickname}, #{email}, #{content}, #{createTime}, #{blogId}, #{parentCommentId});
+        insert into t_comment(nickname, email, content, create_time, blog_id, parent_comment_id, avatar)
+        values (#{nickname}, #{email}, #{content}, #{createTime}, #{blogId}, #{parentCommentId}, #{avatar});
     </insert>
 
     <resultMap id="commentResMap" type="com.fxd.server.pojo.Comment">
