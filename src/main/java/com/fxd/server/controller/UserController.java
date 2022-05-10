@@ -16,6 +16,8 @@ import java.util.List;
 @RestController
 @Slf4j
 public class UserController {
+    static private String AUTH_CODE_NORM = "A39E8B39C5ABDABF";
+    static private String AUTH_CODE_ADMIN = "XIAODONGFAN";
     private final UserService userService;
     private final HttpServletRequest request;
 
@@ -24,9 +26,16 @@ public class UserController {
         this.request = request;
     }
 
-    @PostMapping("/public/signup")
-    public Result signUp(@RequestBody User user) {
+    @PostMapping("/public/signup/{authCode}")
+    public Result signUp(@RequestBody User user, @PathVariable("authCode") String authCode) {
         log.info("User:{}", user);
+        if (authCode.equals(AUTH_CODE_NORM)) {
+            user.setType(1);
+        } else if (authCode.equals(AUTH_CODE_ADMIN)) {
+            user.setType(0);
+        } else {
+            return Result.failed("授权码错误");
+        }
         if (userService.signUp(user) > 0) {
             return Result.success();
         } else {
