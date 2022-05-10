@@ -41,14 +41,8 @@ public class AlbumController {
     }
 
     // 获取用户的全部相册
-    @GetMapping("/private/allAlbums/{userId}")
+    @GetMapping("/public/allAlbums/{userId}")
     public Result getAlbum(@PathVariable("userId") Long userId) {
-        // 验证用户token id
-        String token = request.getHeader("Authorization");
-        if (!JWTUtil.verify(token).getClaim("id").asString().equals(userId.toString())) {
-            return Result.failed("token无效");
-        }
-
         List<Album> albums = albumService.getAlbumsByUserId(userId);
         if (albums != null) {
             return Result.success(albums);

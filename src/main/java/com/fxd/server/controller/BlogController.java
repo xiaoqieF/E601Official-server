@@ -34,7 +34,19 @@ public class BlogController {
         if (!JWTUtil.verify(token).getClaim("id").asString().equals(userId.toString())) {
             return Result.failed("token无效");
         }
-        PageInfo<Blog> pageInfo = blogService.getBlogsByUserId(pageNum, pageSize, userId);
+        PageInfo<Blog> pageInfo = blogService.getBlogsByUserId(pageNum, pageSize, userId, false);
+        Map<String, Object> res = new HashMap<>();
+        res.put("total", pageInfo.getTotal());
+        res.put("blogList", pageInfo.getList());
+        return Result.success(res);
+    }
+
+    // 获取某个用户的全部博客信息
+    @GetMapping("/public/allBlogs/{userId}")
+    public Result getAllPublishedBlogsByUserId(@RequestParam(value = "pageNum", required = false) Integer pageNum,
+                                      @RequestParam(value = "pageSize", required = false) Integer pageSize,
+                                      @PathVariable("userId") Long userId) {
+        PageInfo<Blog> pageInfo = blogService.getBlogsByUserId(pageNum, pageSize, userId, true);
         Map<String, Object> res = new HashMap<>();
         res.put("total", pageInfo.getTotal());
         res.put("blogList", pageInfo.getList());
@@ -106,6 +118,15 @@ public class BlogController {
             return Result.success();
         }
         return Result.failed("编辑博客失败！");
+    }
+
+    // 发送请求博客阅读次数增加
+    @PostMapping("/public/blog/view/{blogId}")
+    public Result increaseBlogViews(@PathVariable Long blogId) {
+        if(blogService.increaseBlogViews(blogId) > 0) {
+            return Result.success();
+        }
+        return Result.failed("失败！");
     }
 
     // 上传文章首图

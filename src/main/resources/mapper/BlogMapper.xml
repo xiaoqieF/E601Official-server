@@ -78,7 +78,10 @@
         from t_blog B
         left outer join t_user U on U.id = B.user_id
         left outer join t_type T on T.id = B.type_id
-        where B.user_id = #{userId};
+        where B.user_id = #{userId}
+        <if test="published == true">
+            and B.published = true;
+        </if>
     </select>
     <select id="getBlogById" resultMap="blogResMap">
         select
@@ -158,6 +161,8 @@
         where id = #{id};
     </update>
 
+
+
     <select id="getAllBlogs" resultMap="blogResMap">
         select
             B.id as blog_id,
@@ -192,4 +197,10 @@
                  left outer join t_type T on T.id = B.type_id
         where B.published = true;
     </select>
+
+    <update id="updateBlogViews">
+        update t_blog
+        set views = views + 1
+        where id = #{blogId};
+    </update>
 </mapper>

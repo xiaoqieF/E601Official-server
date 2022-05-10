@@ -25,15 +25,15 @@ CREATE TABLE `t_blog`  (
                            `id` bigint(20) NOT NULL AUTO_INCREMENT,
                            `appreciation` bit(1) NOT NULL,
                            `comment_enable` bit(1) NOT NULL,
-                           `content` longtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+                           `content` longtext NULL,
                            `create_time` datetime(0) NULL DEFAULT NULL,
-                           `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+                           `description` varchar(255) NULL DEFAULT NULL,
                            `first_picture` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
                            `flag` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
                            `published` bit(1) NOT NULL,
                            `recommend` bit(1) NOT NULL,
                            `share_statement` bit(1) NOT NULL,
-                           `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+                           `title` varchar(255) NULL DEFAULT NULL,
                            `update_time` datetime(0) NULL DEFAULT NULL,
                            `views` int(11) NULL DEFAULT NULL,
                            `type_id` bigint(20) NULL DEFAULT NULL,
@@ -41,7 +41,7 @@ CREATE TABLE `t_blog`  (
                            PRIMARY KEY (`id`) USING BTREE,
                            FOREIGN KEY (`type_id`) REFERENCES `t_type` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
                            FOREIGN KEY (`user_id`) REFERENCES `t_user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 62 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 62 ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for t_comment
@@ -96,6 +96,7 @@ CREATE TABLE `t_user`  (
                            `type` int(11) NULL DEFAULT NULL,
                            `update_time` datetime(0) NULL DEFAULT NULL,
                            `username` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+                           `site` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
                            PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
@@ -125,9 +126,22 @@ CREATE TABLE `t_album`  (
                            `description` longtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
                            `create_time` datetime(0) NULL DEFAULT NULL,
                            `update_time` datetime(0) NULL DEFAULT NULL,
+                           `urls` longtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
                            `user_id` bigint(20) NULL DEFAULT NULL,
                            PRIMARY KEY (`id`) USING BTREE,
                            FOREIGN KEY (`user_id`) REFERENCES `t_user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB AUTO_INCREMENT = 45 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for t_about
+-- ----------------------------
+DROP TABLE IF EXISTS `t_about`;
+CREATE TABLE `t_about`  (
+                            `id` bigint(20) NOT NULL AUTO_INCREMENT,
+                            `content` longtext NULL,
+                            PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 201 ROW_FORMAT = Dynamic;
+
+INSERT INTO t_about(content) values ('About');
 
 SET FOREIGN_KEY_CHECKS = 1;

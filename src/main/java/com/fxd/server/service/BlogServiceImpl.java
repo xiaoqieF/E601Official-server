@@ -23,11 +23,11 @@ public class BlogServiceImpl implements BlogService{
     }
 
     @Override
-    public PageInfo<Blog> getBlogsByUserId(Integer page, Integer offset, Long userId) {
+    public PageInfo<Blog> getBlogsByUserId(Integer page, Integer offset, Long userId, boolean published) {
         PageHelper.orderBy("blog_create_time desc");
         if (page != null && offset != null)
             PageHelper.startPage(page, offset);
-        return new PageInfo<>(mapper.getBlogsByUserId(userId));
+        return new PageInfo<>(mapper.getBlogsByUserId(userId, published));
     }
 
     @Override
@@ -87,6 +87,11 @@ public class BlogServiceImpl implements BlogService{
         PageHelper.orderBy("blog_create_time desc");
         PageHelper.startPage(page, offset);
         return new PageInfo<>(mapper.getAllBlogs());
+    }
+
+    @Override
+    public int increaseBlogViews(Long blogId) {
+        return mapper.updateBlogViews(blogId);
     }
 
 }
