@@ -39,7 +39,10 @@ public class BlogServiceImpl implements BlogService{
         int num = mapper.addBlog(blog);
         log.info("插入博客：{}", blog);
         // 向中间表中插入关联数据
-        mapper.addBlogTag(blog);
+        log.info("add blog:{}", blog);
+        if (blog.getTagId().size() != 0) {
+            mapper.addBlogTag(blog);
+        }
         return num;
     }
 
@@ -53,7 +56,9 @@ public class BlogServiceImpl implements BlogService{
     public Blog getRawBlogById(Long id) {
         Blog blog = mapper.getBlogById(id);
         // 将未填充的字段填充
-        blog.setTypeId(blog.getType().getId());
+        if (blog.getType() != null) {
+            blog.setTypeId(blog.getType().getId());
+        }
         List<Long> tagIds = blog.getTagId();
         for (Tag tag : blog.getTags()) {
             tagIds.add(tag.getId());
@@ -78,7 +83,9 @@ public class BlogServiceImpl implements BlogService{
         int num = mapper.updateBlog(blog);
         // 操作（博客--标签）关系表，先删除博客对应的原标签，后加入新标签
         mapper.deleteBlogTag(blog.getId());
-        mapper.addBlogTag(blog);
+        if (blog.getTagId().size() != 0) {
+            mapper.addBlogTag(blog);
+        }
         return num;
     }
 
