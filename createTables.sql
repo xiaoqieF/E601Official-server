@@ -67,7 +67,9 @@ DROP TABLE IF EXISTS `t_type`;
 CREATE TABLE `t_type`  (
                            `id` bigint(20) NOT NULL AUTO_INCREMENT,
                            `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-                           PRIMARY KEY (`id`) USING BTREE
+                           `user_id` bigint(20) NULL DEFAULT NULL,
+                           PRIMARY KEY (`id`) USING BTREE,
+                           FOREIGN KEY (`user_id`) REFERENCES `t_user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB AUTO_INCREMENT = 58 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -77,7 +79,9 @@ DROP TABLE IF EXISTS `t_tag`;
 CREATE TABLE `t_tag`  (
                           `id` bigint(20) NOT NULL AUTO_INCREMENT,
                           `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-                          PRIMARY KEY (`id`) USING BTREE
+                          `user_id` bigint(20) NULL DEFAULT NULL,
+                          PRIMARY KEY (`id`) USING BTREE,
+                          FOREIGN KEY (`user_id`) REFERENCES `t_user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB AUTO_INCREMENT = 76 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------

@@ -1,16 +1,15 @@
 package com.fxd.server.service;
 
-import com.fxd.server.dao.AboutMapper;
+import com.fxd.server.dao.SiteInfoMapper;
 import com.fxd.server.pojo.About;
 import com.fxd.server.utils.MarkdownUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AboutServiceImpl implements AboutService{
-    private final AboutMapper mapper;
+public class SiteInfoServiceImpl implements SiteInfoService{
+    private final SiteInfoMapper mapper;
 
-    public AboutServiceImpl(AboutMapper mapper) {
+    public SiteInfoServiceImpl(SiteInfoMapper mapper) {
         this.mapper = mapper;
     }
 

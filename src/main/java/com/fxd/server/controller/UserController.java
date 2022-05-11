@@ -47,6 +47,7 @@ public class UserController {
     @PostMapping("/public/signup/upload")
     public Result uploadAvatar(@RequestParam("file") MultipartFile uploadFile,
                                HttpServletRequest req) throws IOException {
+        log.info("上传头像：{}", uploadFile);
         return FileUploadUtil.saveTo("/userAvatar", uploadFile, req);
     }
 

@@ -2,7 +2,7 @@ package com.fxd.server.controller;
 
 import com.fxd.server.pojo.About;
 import com.fxd.server.response.Result;
-import com.fxd.server.service.AboutService;
+import com.fxd.server.service.SiteInfoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Slf4j
-public class AboutController {
-    private final AboutService service;
+public class SiteInfoController {
+    private final SiteInfoService service;
 
-    public AboutController(AboutService service) {
+    public SiteInfoController(SiteInfoService service) {
         this.service = service;
     }
 
